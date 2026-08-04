@@ -1,4 +1,30 @@
 suite('lunr.utils', function () {
+  suite('#warn', function () {
+    test('does not throw regardless of the `this` binding it is called with', function () {
+      // lunr.utils.warn must not rely on `this` to find the global object,
+      // it should safely no-op when `this` is undefined, as is the case
+      // when called from a strict mode context.
+      assert.doesNotThrow(function () {
+        lunr.utils.warn.call(undefined, 'a warning message')
+      })
+    })
+
+    test('forwards the message to console.warn when available', function () {
+      var originalWarn = console.warn,
+          calledWith
+
+      console.warn = function (message) { calledWith = message }
+
+      try {
+        lunr.utils.warn('a warning message')
+      } finally {
+        console.warn = originalWarn
+      }
+
+      assert.equal(calledWith, 'a warning message')
+    })
+  })
+
   suite('#clone', function () {
     var subject = function (obj) {
       setup(function () {
