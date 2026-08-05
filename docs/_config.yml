@@ -1,0 +1,9 @@
+theme: jekyll-theme-minimal
+title: lunr.js docs
+description: A friendly, beginner-focused guide to lunr.js — a small, full-text search library for JavaScript.
+show_downloads: false
+
+# This is a project site (served at bagustris.github.io/lunr.js, not at the
+# domain root), so baseurl must match the repository name for the theme's
+# CSS and any root-relative links to resolve correctly.
+baseurl: "/lunr.js"

@@ -33,8 +33,8 @@ ESLINT ?= ./node_modules/.bin/eslint
 JSDOC ?= ./node_modules/.bin/jsdoc
 NODE_STATIC ?= ./node_modules/.bin/static
 
-all: test lint docs
-release: lunr.js lunr.min.js bower.json package.json component.json docs
+all: test lint api
+release: lunr.js lunr.min.js bower.json package.json component.json api
 
 lunr.js: $(SRC)
 	cat build/wrapper_start $^ build/wrapper_end | \
@@ -73,12 +73,12 @@ test/env/file_list.json: $(wildcard test/*test.js)
 test/index.html: test/env/file_list.json test/env/index.mustache
 	${MUSTACHE} $^ > $@
 
-docs: $(SRC)
-	${JSDOC} -R README.md -d docs -c build/jsdoc.conf.json $^
+api: $(SRC)
+	${JSDOC} -R README.md -d api -c build/jsdoc.conf.json $^
 
 clean:
 	rm -f lunr{.min,}.js
-	rm -rf docs
+	rm -rf api
 	rm *.json
 
 reset:
@@ -87,4 +87,4 @@ reset:
 node_modules: package.json
 	${NPM} -s install
 
-.PHONY: test clean docs reset perf/*_perf.js test/inspect
+.PHONY: test clean api reset perf/*_perf.js test/inspect

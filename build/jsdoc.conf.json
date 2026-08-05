@@ -1,6 +1,6 @@
 {
   "plugins": ["plugins/markdown"],
-  "destination": "docs",
+  "destination": "api",
   "readme": "README.md",
   "templates": {
     "default": {
