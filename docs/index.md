@@ -1,18 +1,28 @@
 ---
 layout: default
-title: lunr.js Documentation
+title: Home
+order: 1
 ---
 
 # lunr.js Documentation
 
-**lunr.js** is a small JavaScript library that adds full-text search to a web page or a Node.js
-application, entirely on the client side — no database or search server required. You give it a
-list of documents, it builds a searchable index out of them, and it lets you query that index and
-get back a ranked list of matches.
+**lunr.js** — *a bit like Solr, but much smaller and not as bright.* A small JavaScript library
+that adds full-text search to a web page or a Node.js application, entirely on the client side —
+no database or search server required. You give it a list of documents, it builds a searchable
+index out of them, and it lets you query that index and get back a ranked list of matches.
 
 This is an unofficial, simplified companion to the guides at
 [lunrjs.com](https://lunrjs.com/guides/getting_started.html), rewritten to be approachable even if
 you've never written JavaScript before.
+
+## Why lunr.js
+
+- **Simple** — designed to be small, yet full featured, so you can deliver a quality search
+  experience without relying on an external, server-side search service.
+- **Extensible** — swap in language processors to improve query accuracy, or customize the
+  built-in text-processing pipeline for your own content.
+- **Everywhere** — no external dependencies; it runs the same way in every modern browser and in
+  Node.js.
 
 ## Where to start
 

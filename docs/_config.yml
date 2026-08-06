@@ -1,4 +1,7 @@
-theme: jekyll-theme-minimal
+remote_theme: bagustris/primer2-theme
+plugins:
+  - jekyll-remote-theme
+
 title: lunr.js docs
 description: A friendly, beginner-focused guide to lunr.js — a small, full-text search library for JavaScript.
 show_downloads: false

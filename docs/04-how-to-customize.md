@@ -1,6 +1,7 @@
 ---
 layout: default
 title: 4. How to Customize & Pre-build
+order: 5
 ---
 
 # 4. How to Customize & Pre-build
@@ -101,6 +102,69 @@ Two things to note:
 This is an advanced feature — most projects never need it. Reach for it only if the default
 tokenizing/stemming behavior is actively working against your data.
 
+## Plugins
+
+A **plugin** is just a function that configures an index builder — the same `this` shown above.
+Wrapping configuration in a plugin makes it reusable across indexes:
+
+```javascript
+function articlePlugin() {
+  this.field('title')
+  this.field('body')
+}
+
+var idx = lunr(function () {
+  this.ref('id')
+  this.use(articlePlugin)
+  // this.add(...) calls as usual
+})
+```
+
+Plugins can also take arguments — `this.use` passes any extra arguments through to the plugin
+function, after the builder itself:
+
+```javascript
+function fieldsPlugin(builder, fields) {
+  fields.forEach(function (field) {
+    builder.field(field)
+  })
+}
+
+var idx = lunr(function () {
+  this.ref('id')
+  this.use(fieldsPlugin, ['title', 'body'])
+})
+```
+
+This is exactly how `lunr-languages` works (see below) — `this.use(lunr.fr)` is a plugin call.
+
+## Storing extra metadata
+
+By default, lunr.js only stores which term matched (`matchData.metadata`) — nothing else, to keep
+the index small. If a pipeline function computes something useful per token (its length, its
+position, a custom tag), you can whitelist that metadata key so it survives into search results:
+
+```javascript
+function tagLength(token) {
+  token.metadata['tokenLength'] = token.toString().length
+  return token
+}
+
+lunr.Pipeline.registerFunction(tagLength, 'tagLength')
+
+var idx = lunr(function () {
+  this.metadataWhitelist.push('tokenLength')
+  this.pipeline.before(lunr.stemmer, tagLength)
+
+  this.ref('id')
+  this.field('body')
+  // this.add(...) calls as usual
+})
+```
+
+Without the whitelist entry, `tokenLength` is computed during indexing but silently dropped —
+`metadataWhitelist` is what tells lunr.js "keep this one around."
+
 ## Searching languages other than English
 
 lunr.js's built-in stemmer is English-only. For other languages, use the companion
@@ -131,12 +195,30 @@ idx.search('pipe')
 If a single index needs to mix multiple languages, `lunr-languages` also provides a
 `multiLanguage` helper — see its README for details.
 
-## Advanced tuning (pointer, not covered here)
+## Similarity tuning (k1 and b)
 
-lunr.js also exposes low-level relevance-scoring parameters (`k1` and `b`, from the BM25 ranking
-algorithm) for teams that need to fine-tune scoring behavior for a specific dataset. This is rarely
-necessary and is out of scope for this guide — see the official
-[Customisation guide](https://lunrjs.com/guides/customising.html) if you need it.
+Search results are ranked using [BM25](https://en.wikipedia.org/wiki/Okapi_BM25), a scoring
+algorithm with two parameters you can tune per index:
+
+```javascript
+var idx = lunr(function () {
+  this.k1(1.2)   // term frequency saturation — default 1.2
+  this.b(0.75)   // document length normalization — default 0.75
+
+  this.ref('id')
+  this.field('body')
+  // this.add(...) calls as usual
+})
+```
+
+- **`b`** (0 to 1, default `0.75`) — how much a document's length affects its score. `0` ignores
+  length entirely; `1` fully normalizes for it. Lower this if long and short documents should be
+  scored more equally.
+- **`k1`** (default `1.2`) — how quickly extra occurrences of a term stop adding to the score.
+  Lower it to reduce the advantage of documents that just repeat a term many times.
+
+Both default to sensible values — only change them if you've noticed a specific ranking problem
+with your dataset, and expect to experiment rather than guess.
 
 ---
 

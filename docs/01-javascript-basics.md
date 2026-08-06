@@ -1,6 +1,7 @@
 ---
 layout: default
 title: 1. JavaScript Basics
+order: 2
 ---
 
 # 1. JavaScript Basics (for complete beginners)
