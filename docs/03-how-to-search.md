@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 3. How to Search
+title: How to Search
 order: 4
 ---
 

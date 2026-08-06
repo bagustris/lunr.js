@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 5. Reference
+title: Reference
 order: 6
 ---
 

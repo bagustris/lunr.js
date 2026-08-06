@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 1. JavaScript Basics
+title: JavaScript Basics
 order: 2
 ---
 

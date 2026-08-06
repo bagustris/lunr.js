@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 4. How to Customize & Pre-build
+title: How to Customize & Pre-build
 order: 5
 ---
 

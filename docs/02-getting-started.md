@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 2. Getting Started
+title: Getting Started
 order: 3
 ---
 
